@@ -28,7 +28,9 @@ Test(about_malloc, malloc_intro)
     */
     int *i = malloc(sizeof(int));
     *i = 5;
-    cr_assert_eq(*i, 6);
+
+    // Not sure if I'm supposed to be changing it here...
+    cr_assert_eq(*i, 5);
 
     /*
         If you allocate space for a variable on the stack in a function call,
@@ -40,7 +42,7 @@ Test(about_malloc, malloc_intro)
         to return new pointers should allocate space for them using malloc.
     */
     int *return_ptr = malloc_func(); /* goto line 5 */
-    cr_assert_eq(*return_ptr, TODO);
+    cr_assert_eq(*return_ptr, 15);
 }
 
 Test(about_malloc, free)
@@ -75,7 +77,7 @@ Test(about_malloc, free)
     ip = NULL;
 
     cr_assert_eq(
-        ip, (void *)TODO_NZ, "What is ip now? What would happen if we \
+        ip, (void *)NULL, "What is ip now? What would happen if we \
         dereference ip?");
 }
 
@@ -94,10 +96,10 @@ Test(about_malloc, calloc)
         memory will be a valid C-string of length 0.
     */
 
-    cr_assert_eq(strlen(s), TODO_NZ, "What is the length of an empty string?");
+    cr_assert_eq(strlen(s), 0, "What is the length of an empty string?");
     strcpy(s, "foo");
 
-    cr_assert_eq(strlen(s), TODO, "What is the new length?");
+    cr_assert_eq(strlen(s), 3, "What is the new length?");
 }
 
 Test(about_malloc, realloc)
@@ -117,12 +119,13 @@ Test(about_malloc, realloc)
 
     ip = realloc(ip, sizeof(long));
 
+    // Same as 0xDEADBEEF
     cr_assert_eq(
-        *(unsigned long *)ip, TODO, "What bytes of ip were preserved \
+        *(unsigned long *)ip, 3735928559, "What bytes of ip were preserved \
         when it is increased in size?");
 
     ip = realloc(ip, sizeof(short));
 
     /* Hint: our VMs are little endian */
-    cr_assert_eq(*(unsigned short *)ip, TODO, "What bytes were preserved now?");
+    cr_assert_eq(*(unsigned short *)ip, 0xBEEF, "What bytes were preserved now?");
 }
