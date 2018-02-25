@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+// stdout is not working. Thus, the solutions are not right
+
 static int static_function(int);
 
 int global_var = 0;

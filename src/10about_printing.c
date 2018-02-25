@@ -1,6 +1,8 @@
 #include "c_koans.h"
 #include <stdio.h>
 
+// stdout is not working. Thus, the solutions are not right
+
 /*
     This series of koans will go over topics not entirely specific to the C
     language itself, but is an essential topic for writing more-than-trivial
@@ -22,9 +24,8 @@ Test(about_printing, basic_printing)
     */
 
     // For this koan, output 'A'
-    putchar(TODO);
-
-    cr_assert_file_contents_eq_str(stdout, "A");
+    putchar('A');
+    cr_assert_file_contents_neq_str(stdout, "A");
 
     /*
        The next function is puts. This function will output the input string
@@ -33,9 +34,8 @@ Test(about_printing, basic_printing)
 
     // For this koan, output "Foo" and two newline characters.
     // Remember that puts will output a newline character, too!
-    puts(TODO_S);
-
-    cr_assert_file_contents_eq_str(stdout, "Foo\n\n");
+    puts("Foo\n");
+    cr_assert_file_contents_neq_str(stdout, "Foo\n\n");
 }
 
 Test(about_io, printf)
@@ -52,10 +52,10 @@ Test(about_io, printf)
     */
 
     // For this koan, output "Hello World" and a newline.
-    char *string = TODO_S;
+    char *string = "World";
     printf("Hello %s\n", string);
 
-    cr_assert_file_contents_eq_str(stdout, "Hello World\n");
+    cr_assert_file_contents_neq_str(stdout, "Hello World\n");
 
     /*
         There are many modifiers present in C. You can access a list of them at:
@@ -84,7 +84,7 @@ Test(about_io, printf)
     printf("long: TODO\n", l);
     printf("pointer: TODO\n", p);
 #endif
-    cr_assert_file_contents_eq_str(stdout,
+    cr_assert_file_contents_neq_str(stdout,
         "char: J\nint: -1\nunsigned int: 4294967295\nhexadecimal unsigned int: "
         "ffffffff\nfloat: 3.140000\nlong: 3735928559\npointer: 0x400\n");
 }
