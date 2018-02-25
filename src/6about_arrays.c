@@ -3,7 +3,8 @@
 
 void func(int *array)
 {
-    cr_assert_eq(sizeof(array), 0,
+    // size of int * is 8
+    cr_assert_eq(sizeof(array), 8,
         "That same array gives a different size "
         "when passed into this function");
 }
@@ -23,7 +24,7 @@ Test(about_arrays, what_is_an_array)
         size of the type (in this case, int)
     */
     /* Change this to: 'cr_assert_not_null' */
-    cr_assert_null(array,
+    cr_assert_not_null(array,
         "An array declared in this way is a label meaning "
         "it has an address %p",
         array);
@@ -32,11 +33,11 @@ Test(about_arrays, what_is_an_array)
      * An array variable's name is merely a label for the address of the first
      * element in the array.
     */
-    cr_assert_eq(*array, 0,
+    cr_assert_eq(*array, 1,
         "Dereferencing this label's address gives us the "
         "value at that point");
 
-    cr_assert_eq(*(array + 2), array[0],
+    cr_assert_eq(*(array + 2), array[2],
         "Dereferencing with an offset is the same as using the bracket notation"
         " to access");
 
@@ -56,7 +57,7 @@ Test(about_arrays, what_is_an_array)
         parenthesis.
     */
 
-    cr_assert_eq(sizeof(array), 0,
+    cr_assert_eq(sizeof(array), 20,
         "sizeof an array can be tricky is it size "
         "of a pointer or sum of all memory the "
         "array takes up?");
@@ -68,7 +69,7 @@ Test(about_arrays, what_is_an_array)
         array elegantly.
     */
     int another_array[5] = { 1, 2, 3, 4, 5 };
-    cr_assert_eq(another_array[3], TODO,
+    cr_assert_eq(another_array[3], 4,
         "We should be seeing the some element's value.");
 
     /*

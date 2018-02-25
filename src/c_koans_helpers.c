@@ -82,7 +82,9 @@ static int static_int = 0;
 
 static int static_function(int n)
 {
+    // 1
     static_int++;
+    // n = 0
     if (n == 0)
         return 0;
     else
