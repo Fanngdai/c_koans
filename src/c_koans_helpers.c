@@ -83,6 +83,13 @@ int recursion_local_static() {
     return recursion_local_static();
 }
 
+void plus_plus_check() {
+    for(int i = 0; i<1; i++) {
+        i++;
+        i++;
+        printf("#########################%d\n",i++);
+    }
+}
 /*
     Static when used in a top-level scope will cause the variable or function
     to be visible only within the file. This is similar to the 'private' keyword
