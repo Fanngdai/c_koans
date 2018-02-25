@@ -7,8 +7,7 @@ static int static_function(int);
 
 int global_var = 0;
 
-int string_compare(const void *s1, const void *s2)
-{
+int string_compare(const void *s1, const void *s2) {
     /*
         The comparison function must match the declaration in the prototype
         exactly. This is why, even though we are comparing 2 strings, the
@@ -22,8 +21,7 @@ int string_compare(const void *s1, const void *s2)
     return strcmp(*(char **)s1, *(char **)s2);
 }
 
-void double_an_int(int *i)
-{
+void double_an_int(int *i) {
     /*
         The '*' operator for dereference has a higher precedence than the other
         arithmetic operators, therefore it will be multiplying and assigning the
@@ -32,8 +30,7 @@ void double_an_int(int *i)
     *i *= 2;
 }
 
-int modify_global()
-{
+int modify_global() {
     /*
         We modify the global variable, located in the .data section,
         visible to the entire program.
@@ -42,8 +39,7 @@ int modify_global()
     return global_var;
 }
 
-int modify_local()
-{
+int modify_local() {
     /*
         We modify the local variable, located and initialzed on the stack.
         every call, it will be initalized and modified in the same fashion.
@@ -53,8 +49,7 @@ int modify_local()
     return i;
 }
 
-int modify_local_static()
-{
+int modify_local_static() {
     /*
         Local static variables will be initialized only once and be located
         in the .data section. Local static variables can only be referenced
@@ -67,10 +62,25 @@ int modify_local_static()
         in;
         the next function will show this
     */
-    static int i = 0;
+    // does not matter if i = 0 or just 0
+    static int i;
     i++;
     static_function(0); /* we are calling this to avoid a compiler warning */
     return i;
+}
+
+int recursion_local_static() {
+    static int i;
+
+    if(i == 10) {
+        printf("#######################\n");
+        return 0;
+    }
+    else
+        printf("$$$$$$$$$$$$$$$$$$$$$$$%d\n", i);
+
+    i++;
+    return recursion_local_static();
 }
 
 /*
@@ -80,8 +90,7 @@ int modify_local_static()
  */
 static int static_int = 0;
 
-static int static_function(int n)
-{
+static int static_function(int n) {
     // 1
     static_int++;
     // n = 0
@@ -91,8 +100,7 @@ static int static_function(int n)
         return static_int + static_function(n - 1);
 }
 
-struct person make_person(const char *name, int month, int day, int year)
-{
+struct person make_person(const char *name, int month, int day, int year) {
     struct person ret;
 
     /* is this a problem? What is the lifetime of this heap allocated memory? */
@@ -106,9 +114,7 @@ struct person make_person(const char *name, int month, int day, int year)
     return ret;
 }
 
-int make_person_better(
-    struct person *person, const char *name, int month, int day, int year)
-{
+int make_person_better(struct person *person, const char *name, int month, int day, int year) {
 
     /*
         The access operator for a pointer to a struct is different that usual

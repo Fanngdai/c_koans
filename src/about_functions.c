@@ -77,4 +77,6 @@ Test(about_functions, function_scope_and_vars)
     modify_local_static();
     cr_assert_eq(modify_local_static(), 3,
         "What is the value of the local static variable after the third call?");
+
+    // recursion_local_static();
 }
