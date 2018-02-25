@@ -14,16 +14,16 @@ Test(about_dataclasses, unions)
 
     /* A union declaration is the same as a struct's */
     union first_union {
-        double d;
-        int i;
-        short s;
-        char c;
+        double d;           // 8
+        int i;              // 4
+        short s;            // 2
+        char c;             // 1
     } u; /* Here we initialize a union variable, just like a struct. */
 
     u.d = 1.01;
 
-    cr_assert_eq(u.d, TODO, "What is the value of d that we assigned?");
-    cr_assert_eq(sizeof u, TODO,
+    cr_assert_eq(u.d, 1.01, "What is the value of d that we assigned?");
+    cr_assert_eq(sizeof u, 8,
         "What is the size of the largest data type in "
         "the union?");
 
@@ -33,8 +33,8 @@ Test(about_dataclasses, unions)
     */
 
     u.i = 0xDEADCAFE;
-
-    cr_assert_eq(u.s, TODO,
+    // C = 1100
+    cr_assert_eq(u.s, 0xFFFFCAFE,
         "What is the value stored inside the union, "
         "interpreted as a short?");
 }
@@ -51,7 +51,7 @@ Test(about_dataclasses, enums)
     /* TRUE will be assigned 0, FALSE will be the next value, 1 */
     enum boolean { TRUE, FALSE };
 
-    cr_assert_eq(FALSE, TODO, "What will the enum FALSE be?");
+    cr_assert_eq(FALSE, 1, "What will the enum FALSE be?");
 
     /* enum declarations follow a similar format as structs */
     enum month {
@@ -72,7 +72,7 @@ Test(about_dataclasses, enums)
     /* enums can be assigned variables in the same fashion as structs */
     enum month current = AUG;
 
-    cr_assert_eq(current, TODO,
+    cr_assert_eq(current, 8,
         "What is the current month? (This was written "
         "in August)");
 
@@ -91,7 +91,7 @@ Test(about_dataclasses, enums)
 
     bit_mask mask_four = FOUR;
 
-    cr_assert_eq(mask_four, TODO, "What is the value of FOUR in this enum?");
+    cr_assert_eq(mask_four, 0x8, "What is the value of FOUR in this enum?");
 }
 
 Test(about_dataclasses, bit_fields)
@@ -108,6 +108,7 @@ Test(about_dataclasses, bit_fields)
         only 3 digits, the options are 0 to 999. This can be represented by 10
         bits.
     */
+    // 10 bits -> 1 00000 00000 - 1 = 1 2 4 8 16 32 64 128 256 512 1024
     struct course_number {
         unsigned int n : 10;
     } cnum;
@@ -119,23 +120,25 @@ Test(about_dataclasses, bit_fields)
         In this case, this is an int, which is 32 bits long. Prior to C99, the
         only valid type a bit field could be was 'int', a single word.
     */
-    cr_assert_eq(sizeof cnum, TODO, "What is the size of the struct?");
+    cr_assert_eq(sizeof cnum, 4, "What is the size of the struct?");
 
     struct course {
-        unsigned int n : 10;
-        unsigned int c3 : 7;
-        unsigned int c2 : 7;
-        unsigned int c1 : 7;
-        unsigned int is_offered : 1;
+        // Allocates only curtain amt of bits
+        unsigned int n : 10;            // 101
+        unsigned int c3 : 7;            // E
+        unsigned int c2 : 7;            // S
+        unsigned int c1 : 7;            // C
+        unsigned int is_offered : 1;    // 1
     };
 
     struct course cse101 = { 101, 'E', 'S', 'C', 1 };
 
-    cr_assert_eq(*(unsigned int *)(&cse101), TODO,
+    cr_assert_eq(*(unsigned int *)(&cse101), 0xC3A71465,
         "Determine the hex value of "
         "the bit vector for cse101!");
 
-    cr_assert_eq(sizeof cse101, TODO, "What is the size of our variable?");
+    // 10 + 7 + 7 + 7 + 1 = 32 bits = 4 bytes
+    cr_assert_eq(sizeof cse101, 4, "What is the size of our variable?");
 
     /*
         In more modern C (C99+), bit fields may be of any type, and the size of
@@ -149,7 +152,7 @@ Test(about_dataclasses, bit_fields)
         unsigned char foreground_color : 4;
         unsigned char foreground_char : 4;
     };
-    cr_assert_eq(sizeof(struct mmio_cell), TODO,
+    cr_assert_eq(sizeof(struct mmio_cell), 2,
         "What would the size of this "
         "struct?");
 }
@@ -165,7 +168,7 @@ Test(about_dataclasses, about_const)
     /* A const primitive is unchangable */
     const int i = 10;
     /* i = 4; ERROR! */
-    cr_assert_eq(i, TODO,
+    cr_assert_eq(i, 10,
         "Attempting to reassign i will result in a compiler "
         "error.");
 
@@ -174,7 +177,7 @@ Test(about_dataclasses, about_const)
     const int *jp = &j;
 
     /* *jp = 10; ERROR! */
-    cr_assert_eq(*jp, TODO,
+    cr_assert_eq(*jp, 100,
         "Attemping to change the value jp pointer to will "
         "result in a compiler error.");
 
@@ -185,8 +188,7 @@ Test(about_dataclasses, about_const)
     int *const kp = &j;
 
     /* jp2 = &i; ERROR! */
-
-    cr_assert_eq(kp, TODO,
+    cr_assert_eq(kp, &j,
         "Attempting to point kp elsewhere will result in a "
         "compiler error.");
 
@@ -194,7 +196,7 @@ Test(about_dataclasses, about_const)
     const int l = 400;
     const int *const lp = &l;
 
-    cr_assert_eq(*lp, TODO,
+    cr_assert_eq(*lp, 400,
         "Attempting to do any of the previous options to "
         "lp will result in a compiler error.");
 }
