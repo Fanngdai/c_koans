@@ -121,7 +121,7 @@ Test(about_malloc, realloc)
 
     // Same as 0xDEADBEEF
     cr_assert_eq(
-        *(unsigned long *)ip, 3735928559, "What bytes of ip were preserved \
+        *(unsigned long *)ip, 0x00000000DEADBEEF, "What bytes of ip were preserved \
         when it is increased in size?");
 
     ip = realloc(ip, sizeof(short));

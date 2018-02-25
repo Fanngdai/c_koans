@@ -17,7 +17,9 @@
     in the list.
  */
 struct linked_list {
+    // 4 bytes
     int data;
+    // 8 bytes
     struct linked_list *next;
 };
 
@@ -32,8 +34,9 @@ Test(about_linked_lists, linked_list_basics)
 
     head.next = &list_node;
 
-    cr_assert_eq(head.next, TODO, "What is the `next` value of head?");
-    cr_assert_eq(head.next->data, TODO, "What `data` does it hold?");
+    // What ever that address is...
+    cr_assert_eq(head.next, &list_node, "What is the `next` value of head?");
+    cr_assert_eq(head.next->data, 12, "What `data` does it hold?");
 
     /*
         Remember that when using the sizeof operator on a array type, it will
@@ -42,7 +45,7 @@ Test(about_linked_lists, linked_list_basics)
         How much memory does each `struct linked_list` node take up? What are
         the pros/cons of this memory usage compared to arrays?
     */
-    cr_assert_eq(sizeof(head), TODO, "How much memory does `head` occupy?");
+    cr_assert_eq(sizeof(head), 16, "How much memory does `head` occupy?");
 }
 
 Test(about_linked_lists, traversing_linked_list)
@@ -70,8 +73,8 @@ Test(about_linked_lists, traversing_linked_list)
         /* Do some operations ... */
     }
 
-    cr_assert_eq(nodes[3].next, TODO, "What is nodes[3] pointing to?");
-    cr_assert_eq(nodes[3].next->data, TODO, "What is the data contained?");
+    cr_assert_eq(nodes[3].next, &nodes[2], "What is nodes[3] pointing to?");
+    cr_assert_eq(nodes[3].next->data, 3, "What is the data contained?");
 }
 
 /*
