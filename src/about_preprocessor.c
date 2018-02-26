@@ -12,8 +12,7 @@
 */
 
 #define JOKER "JOKER"
-
-#define MAX(a, b) (a)
+#define MAX(a, b)(a>b)?a:b
 
 Test(about_preprocessor, macro_definitions)
 {
@@ -28,7 +27,7 @@ Test(about_preprocessor, macro_definitions)
 
     /* Fix the string we are comparing with what JOKER will be replaced with. */
 
-    const char *CHANGE_ME = "MONA";
+    const char *CHANGE_ME = "JOKER";
     cr_assert(strcmp(CHANGE_ME, JOKER) == 0,
         "Macro JOKER not compared with what it was replaced with!");
 
@@ -53,19 +52,19 @@ Test(about_preprocessor, macro_definitions)
     (void)j; /* ignore this, it's to suppress the 'unused variable' warning. */
 }
 
+#define DEFINE_ME
 #ifndef DEFINE_ME
-#define FIVE 0
+#define FIVE 5
 #else
 #define FIVE 5
 #endif /* DEFINE_ME */
 
+#define MOVE_ME             // ok
 #ifndef MOVE_ME
-#define SEVEN 0
+#define SEVEN 7
 #else
 #define SEVEN 7
 #endif /* MOVE_ME */
-
-#define MOVE_ME
 
 Test(about_preprocessor, conditional_defines)
 {
@@ -94,6 +93,7 @@ Test(about_preprocessor, conditional_defines)
 }
 
 #define STRINGIZE(arg) #arg
+#define STRINGIZE2(arg) arg
 
 Test(about_preprocessor, stringizing)
 {
@@ -107,7 +107,8 @@ Test(about_preprocessor, stringizing)
         To complete this test, replace put the correct argument into STRINGIZE
         such that it will match the string literal.
     */
-    cr_assert_eq("my string", STRINGIZE(TODO), "Stringizing not completed.");
+    cr_assert_eq("my string", STRINGIZE(my string), "Stringizing not completed.");
+    cr_assert_eq("my string", STRINGIZE2("my string"), "Stringizing not completed.");
 }
 
 #define ALWAYS_FALSE false
@@ -128,7 +129,7 @@ Test(about_preprocessor, macro_concatination)
         To complete this test, assert that THIS_IS(TRUE)!
         Be wary of your usage of capital letters.
     */
-    cr_assert(THIS_IS(FALSE), "Concatination not completed.");
+    cr_assert(THIS_IS(TRUE), "Concatination not completed.");
 }
 
 #define VARIADIC_ARGUMENTS(...) #__VA_ARGS__
@@ -150,6 +151,6 @@ Test(about_preprocessor, variadic_macros)
         Note that the macro takes advantage of stringizing. Your argument is not
         going to be a string.
     */
-    cr_assert_eq("varable,args,with,commas", VARIADIC_ARGUMENTS(TODO),
+    cr_assert_eq("varable,args,with,commas", VARIADIC_ARGUMENTS(varable,args,with,commas),
         "Variadic macros not yet completed");
 }

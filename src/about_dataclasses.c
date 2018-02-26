@@ -133,6 +133,7 @@ Test(about_dataclasses, bit_fields)
 
     struct course cse101 = { 101, 'E', 'S', 'C', 1 };
 
+    // Convert all into binary and allocate the memory accordingly
     cr_assert_eq(*(unsigned int *)(&cse101), 0xC3A71465,
         "Determine the hex value of "
         "the bit vector for cse101!");
